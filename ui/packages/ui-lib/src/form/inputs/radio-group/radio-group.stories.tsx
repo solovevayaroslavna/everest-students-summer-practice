@@ -6,7 +6,7 @@ import { RadioGroupProps } from './radio-group.types';
 
 type ExpandedRadioGroupProps = RadioGroupProps & {
   customSize: number,
-  required: boolean
+  required: boolean,
 }
 
 const meta = {
@@ -22,10 +22,11 @@ const meta = {
     ...args
   }) {
     const methods = useForm();
-
+    
     return (
         <FormProvider {...methods}>
           <RadioGroup 
+            {...args}
             isRequired={required}
             radioGroupFieldProps={{
               sx: {
@@ -36,10 +37,10 @@ const meta = {
             }}
             label='Radio-group small'
             options={options} 
-            {...args}
           />
 
           <RadioGroup 
+            {...args}
             isRequired={required}
             radioGroupFieldProps={{
               sx: {
@@ -50,10 +51,10 @@ const meta = {
             }}
             label='Radio-group medium'
             options={options} 
-            {...args}
           />
           
           <RadioGroup
+            {...args}
             isRequired={required}
             radioGroupFieldProps={{
               sx: {
@@ -64,7 +65,6 @@ const meta = {
             }}
             label='Radio-group customSize(default value = "large")'
             options={options} 
-            {...args}
           />
         </FormProvider>
     );
@@ -76,9 +76,9 @@ type Story = StoryObj<ExpandedRadioGroupProps>;
 
 export const Basic: Story = {
   args: {
-    name: 'example1',
+    name: 'RadioGroup',
     options: [{label: 'First', value: 'First', disabled: false}, {label: 'Second', value: 'Second', disabled: false}, {label: 'Third', value: 'Third', disabled: true}],
     customSize: 28,
-    required: true,
+    required: false,
   },
 };
