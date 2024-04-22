@@ -1,26 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TextField } from '@mui/material';
-import TextInput from './text';
-import { TextInputProps } from './text.types';
 import { useForm } from 'react-hook-form';
 import { FormProvider } from 'react-hook-form';
-import React from 'react';
+
+import TextInput from './text';
+import { TextInputProps } from './text.types';
 
 type ExpandedTextInputProps = TextInputProps & {
   readOnly?: boolean,
   type?: string, 
-  size?: "small" | "medium", 
-  maxLenght?: number, 
+  maxLength?: number, 
   value?: string,
   placeholder?: string,
   error?: boolean,
   disabled?: boolean,
-  multiline?: boolean,
   minRows?: number,
+  size?: "small" | "medium", 
 }
 
 const meta = {
-  title: 'TextField',
+  title: 'TextInput',
   component: TextInput,
   parameters: {
     layout: 'centered',
@@ -36,41 +34,52 @@ const meta = {
     size,
     disabled,
     placeholder,
-    // value,
-    type, // не понимаю почему он не отрабатывает. даже пытался в самом компоненте type указать(type password)
-    maxLenght, // не отрабатывает хотя такой prop существует в inputProps
+    minRows,
+    type,
+    maxLength,
     error, // не отрабатывает без костыля. Хотя дизайнерам должно хватить. Но не будет хелпер-текста
     ...args
   }) {
     const methods = useForm();
     if(error) {
-      methods.setError('example1', {});
-      methods.setError('example2', {});
+      methods.setError('TextField', {});
     } else {
-      methods.clearErrors('example1');
-      methods.clearErrors('example2');
+      methods.clearErrors('TextField');
     }
     return (
       <FormProvider {...methods}>
-        {/* <TextField name='example3' label='hello' error/>  // это я просто смотрел как отрабатывает данный компонент, уберу все лишнее перед PR в fork*/} 
+        {/* <TextField name='example3' label='hello' error={error} />  // это я просто смотрел как отрабатывает данный компонент, уберу все лишнее перед PR в fork  */}
         <TextInput
           {...args}
+          
           textFieldProps={{
             error,
-            // value, // временно закомментировал, тк не очень удобно проверять компонент в storyBook, тк значение инпyта можно менять только через value, если данный параметр есть
-            type,
             placeholder,
             disabled,
             size,
             multiline: true,
-            minRows: 3,
+            minRows,
             inputProps: {
               readOnly, 
-              maxLenght
+              maxLength
             }
           }}
         />
-        {/* <TextInput {...args} name='example2'/>  в дальнейшем просто скопирую первый TextInp;ut без multiline & minrows props*/}
+
+        <TextInput
+          {...args}
+          textFieldProps={{
+            type,
+            placeholder,
+            disabled,
+            size,
+            error,
+            inputProps: {
+              readOnly, 
+              maxLength,
+            }
+          }}
+        />
       </FormProvider>
     );
   },
@@ -81,16 +90,16 @@ type Story = StoryObj<Meta>;
 
 export const Basic: Story = {
   args: {
-    name: 'example1',
+    name: 'TextField',
     label: 'Label',
     placeholder: 'placeholder',
-    value: '',
-    maxLenght: 5,
+    maxLength: 8,
     size: 'small',
     disabled: false,
     type: 'password',
     error: false,
     readOnly: false,
     isRequired: false,
+    minRows: 3,
   },
 }
