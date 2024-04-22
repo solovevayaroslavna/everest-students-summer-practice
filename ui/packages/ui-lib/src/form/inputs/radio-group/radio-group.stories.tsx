@@ -1,10 +1,12 @@
-import RadioGroup from './radio-group';
-import { RadioGroupProps } from './radio-group.types';'./radio-group.types'
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import RadioGroup from './radio-group';
+import { RadioGroupProps } from './radio-group.types';
+
 type ExpandedRadioGroupProps = RadioGroupProps & {
-  customSize: number
+  customSize: number,
+  required: boolean
 }
 
 const meta = {
@@ -14,6 +16,7 @@ const meta = {
     layout: 'centered',
   },
   render: function Render({
+    required,
     customSize,
     options,
     ...args
@@ -23,6 +26,7 @@ const meta = {
     return (
         <FormProvider {...methods}>
           <RadioGroup 
+            isRequired={required}
             radioGroupFieldProps={{
               sx: {
                 '& .MuiSvgIcon-root': {
@@ -36,6 +40,7 @@ const meta = {
           />
 
           <RadioGroup 
+            isRequired={required}
             radioGroupFieldProps={{
               sx: {
                 '& .MuiSvgIcon-root': {
@@ -49,6 +54,7 @@ const meta = {
           />
           
           <RadioGroup
+            isRequired={required}
             radioGroupFieldProps={{
               sx: {
                 '& .MuiSvgIcon-root': {
@@ -56,7 +62,7 @@ const meta = {
                 },
               }
             }}
-            label='Radio-group customSize'
+            label='Radio-group customSize(default value = "large")'
             options={options} 
             {...args}
           />
@@ -71,7 +77,8 @@ type Story = StoryObj<ExpandedRadioGroupProps>;
 export const Basic: Story = {
   args: {
     name: 'example1',
-    options: [{label: 'First', value: 'First'}, {label: 'Second', value: 'Second'}, {label: 'Third', value: 'Third', disabled: true}],
-    customSize: 40,
+    options: [{label: 'First', value: 'First', disabled: false}, {label: 'Second', value: 'Second', disabled: false}, {label: 'Third', value: 'Third', disabled: true}],
+    customSize: 28,
+    required: true,
   },
 };
