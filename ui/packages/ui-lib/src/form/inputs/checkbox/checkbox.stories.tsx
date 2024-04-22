@@ -8,7 +8,7 @@ type ExpandedCheckboxProps = CheckboxProps & {
   customSize: number,
   message: string,
   disabled: boolean,
-  required: true,
+  required: boolean,
   checked: boolean,
 }
 
@@ -70,9 +70,9 @@ const meta = {
             disabled,
           }}
         />
-        
+
       </FormProvider>
-    )
+    );
   },
 } satisfies Meta<ExpandedCheckboxProps>;
 export default meta;
