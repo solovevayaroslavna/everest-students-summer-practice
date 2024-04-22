@@ -27,6 +27,10 @@ const meta = {
     size: {
       options: ['small', 'medium'],
       control: { type: 'radio' },
+    },
+    type: {
+      options: ['email', 'password', 'number', 'text', 'tel', 'url'],
+      control: 'select'
     }
   },
   render: function Render({
@@ -37,23 +41,21 @@ const meta = {
     minRows,
     type,
     maxLength,
-    error, // не отрабатывает без костыля. Хотя дизайнерам должно хватить. Но не будет хелпер-текста
+    error,
     ...args
   }) {
     const methods = useForm();
     if(error) {
-      methods.setError('TextField', {});
+      methods.setError('TextField', {message: 'Please insert a valid value'});
     } else {
       methods.clearErrors('TextField');
     }
+
     return (
       <FormProvider {...methods}>
-        {/* <TextField name='example3' label='hello' error={error} />  // это я просто смотрел как отрабатывает данный компонент, уберу все лишнее перед PR в fork  */}
         <TextInput
           {...args}
-          
           textFieldProps={{
-            error,
             placeholder,
             disabled,
             size,
@@ -73,7 +75,6 @@ const meta = {
             placeholder,
             disabled,
             size,
-            error,
             inputProps: {
               readOnly, 
               maxLength,
@@ -92,7 +93,7 @@ export const Basic: Story = {
   args: {
     name: 'TextField',
     label: 'Label',
-    placeholder: 'placeholder',
+    placeholder: 'Placeholder',
     maxLength: 8,
     size: 'small',
     disabled: false,
