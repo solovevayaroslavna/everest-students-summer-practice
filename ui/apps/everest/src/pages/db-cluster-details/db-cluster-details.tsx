@@ -22,6 +22,9 @@ import { DbActionButton } from './db-action-button';
 import { Messages } from './db-cluster-details.messages';
 import { DBClusterDetailsTabs } from './db-cluster-details.types';
 import { DbCluster, DbClusterStatus } from 'shared-types/dbCluster.types';
+import { StatusField } from 'components/status-field/status-field';
+import { beautifyDbClusterStatus } from 'pages/databases/DbClusterView.utils';
+import { DB_CLUSTER_STATUS_TO_BASE_STATUS } from 'pages/databases/DbClusterView.constants';
 
 export const DbClusterDetails = () => {
   const { dbClusterName, namespace = '' } = useParams();
@@ -84,8 +87,18 @@ export const DbClusterDetails = () => {
           </IconButton>
           <Typography variant="h4">{dbClusterName}</Typography>
         </Box>
-        {/* At this point, loading is done and we either have the cluster or not */}
         <DbActionButton dbCluster={dbCluster!} />
+        {/* {dbCluster.status &&  я могу сделать через условный рендеринг, либо чтобы стиль кода был одинаков, то сделать через ! как сделано на строчке выше, 
+        но можно ли быть уверенным в том, что статус точно существует???*/}
+          <StatusField
+            dataTestId={dbClusterName}
+            status={dbCluster.status!.status}
+            statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
+          >
+            {beautifyDbClusterStatus(dbCluster.status!.status)}
+          </StatusField>
+        {/* } */}
+        {/* At this point, loading is done and we either have the cluster or not */}
       </Box>
       <Box
         sx={{
