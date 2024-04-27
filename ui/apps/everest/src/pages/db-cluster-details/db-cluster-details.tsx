@@ -86,18 +86,15 @@ export const DbClusterDetails = () => {
             <ArrowBackIosIcon sx={{ pl: '10px' }} fontSize="large" />
           </IconButton>
           <Typography variant="h4">{dbClusterName}</Typography>
+          <DbActionButton dbCluster={dbCluster!} />
         </Box>
-        <DbActionButton dbCluster={dbCluster!} />
-        {/* {dbCluster.status &&  я могу сделать через условный рендеринг, либо чтобы стиль кода был одинаков, то сделать через ! как сделано на строчке выше, 
-        но можно ли быть уверенным в том, что статус точно существует???*/}
-          <StatusField
-            dataTestId={dbClusterName}
-            status={dbCluster.status!.status}
-            statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
-          >
-            {beautifyDbClusterStatus(dbCluster.status!.status)}
-          </StatusField>
-        {/* } */}
+        <StatusField
+          dataTestId={dbClusterName}
+          status={dbCluster.status!.status}
+          statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
+        >
+          {beautifyDbClusterStatus(dbCluster.status!.status)}
+        </StatusField>
         {/* At this point, loading is done and we either have the cluster or not */}
       </Box>
       <Box
