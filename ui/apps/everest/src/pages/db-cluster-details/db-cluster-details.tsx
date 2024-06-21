@@ -76,15 +76,15 @@ export const DbClusterDetails = () => {
           <DbActionButton dbCluster={dbCluster} />
         </Box>
         {/* At this point, loading is done and we either have the cluster or not */}
-        {dbCluster.status?.status &&
-            <StatusField
-              dataTestId={dbClusterName}
-              status={dbCluster.status.status}
-              statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
-            >
-              {beautifyDbClusterStatus(dbCluster.status.status)}
-            </StatusField>
-        } 
+        {dbCluster.status?.status && (
+          <StatusField
+            dataTestId={dbClusterName}
+            status={dbCluster.status.status}
+            statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
+          >
+            {beautifyDbClusterStatus(dbCluster.status.status)}
+          </StatusField>
+        )}
       </Box>
       <Box
         sx={{
