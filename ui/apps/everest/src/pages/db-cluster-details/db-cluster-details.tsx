@@ -6,6 +6,9 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
+import StatusField from 'components/status-field/status-field';
+import { beautifyDbClusterStatus } from 'pages/databases/DbClusterView.utils';
+import { DB_CLUSTER_STATUS_TO_BASE_STATUS } from 'pages/databases/DbClusterView.constants';
 import { NoMatch } from '../404/NoMatch';
 import BackNavigationText from 'components/back-navigation-text';
 import { DbActionButton } from './db-action-button';
@@ -13,10 +16,6 @@ import { Messages } from './db-cluster-details.messages';
 import { DBClusterDetailsTabs } from './db-cluster-details.types';
 import { DbClusterStatus } from 'shared-types/dbCluster.types';
 import { useDbCluster } from 'hooks/api/db-cluster/useDbCluster';
-import { DbCluster, DbClusterStatus } from 'shared-types/dbCluster.types';
-import { StatusField } from 'components/status-field/status-field';
-import { beautifyDbClusterStatus } from 'pages/databases/DbClusterView.utils';
-import { DB_CLUSTER_STATUS_TO_BASE_STATUS } from 'pages/databases/DbClusterView.constants';
 
 export const DbClusterDetails = () => {
   const { dbClusterName = '', namespace = '' } = useParams();
@@ -57,26 +56,35 @@ export const DbClusterDetails = () => {
           display: 'flex',
           gap: 1,
           alignItems: 'center',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
           mb: 1,
         }}
       >
-        <BackNavigationText
-          text={dbClusterName!}
-          onBackClick={() => navigate('/databases')}
-        />
-        <DbActionButton dbCluster={dbCluster!} />
-        {/* {dbCluster.status &&  я могу сделать через условный рендеринг, либо чтобы стиль кода был одинаков, то сделать через ! как сделано на строчке выше, 
-        но можно ли быть уверенным в том, что статус точно существует???*/}
-          <StatusField
-            dataTestId={dbClusterName}
-            status={dbCluster.status!.status}
-            statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
-          >
-            {beautifyDbClusterStatus(dbCluster.status!.status)}
-          </StatusField>
-        {/* } */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 1,
+          }}
+        >
+          <BackNavigationText
+            text={dbClusterName!}
+            onBackClick={() => navigate('/databases')}
+          />
+          <DbActionButton dbCluster={dbCluster} />
+        </Box>
         {/* At this point, loading is done and we either have the cluster or not */}
+        {dbCluster.status?.status &&
+            <StatusField
+              dataTestId={dbClusterName}
+              status={dbCluster.status.status}
+              statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
+            >
+              {beautifyDbClusterStatus(dbCluster.status.status)}
+            </StatusField>
+        } 
       </Box>
       <Box
         sx={{
