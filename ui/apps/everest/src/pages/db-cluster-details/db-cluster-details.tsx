@@ -66,16 +66,16 @@ export const DbClusterDetails = () => {
           onBackClick={() => navigate('/databases')}
         />
         {/* At this point, loading is done and we either have the cluster or not */}
-        {dbCluster.status?.status && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: 1,
-            }}
-          >
-            <DbActionButton dbCluster={dbCluster} />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 1,
+          }}
+        >
+          <DbActionButton dbCluster={dbCluster} />
+          {dbCluster.status?.status && (
             <StatusField
               dataTestId={dbClusterName}
               status={dbCluster.status.status}
@@ -83,8 +83,8 @@ export const DbClusterDetails = () => {
             >
               {beautifyDbClusterStatus(dbCluster.status.status)}
             </StatusField>
-          </Box>
-        )}
+          )}
+        </Box>
       </Box>
       <Box
         sx={{
