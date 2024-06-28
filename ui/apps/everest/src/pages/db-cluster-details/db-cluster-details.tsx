@@ -1,4 +1,5 @@
 import { Alert, Box, Skeleton, Tab, Tabs } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import {
   Link,
   Outlet,
@@ -51,9 +52,9 @@ export const DbClusterDetails = () => {
   // All clear, show the cluster data
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
+      <Stack
+        direction="row"
         sx={{
-          display: 'flex',
           gap: 1,
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -66,26 +67,26 @@ export const DbClusterDetails = () => {
           onBackClick={() => navigate('/databases')}
         />
         {/* At this point, loading is done and we either have the cluster or not */}
-        <Box
+        <Stack
+          direction="row"
           sx={{
-            display: 'flex',
             alignItems: 'center',
             flexWrap: 'wrap',
             gap: 1,
           }}
         >
           <DbActionButton dbCluster={dbCluster} />
-          {dbCluster.status?.status && (
-            <StatusField
-              dataTestId={dbClusterName}
-              status={dbCluster.status.status}
-              statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
-            >
-              {beautifyDbClusterStatus(dbCluster.status.status)}
-            </StatusField>
-          )}
-        </Box>
-      </Box>
+          <StatusField
+            dataTestId={dbClusterName}
+            status={dbCluster.status?.status as DbClusterStatus}
+            statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
+          >
+            {beautifyDbClusterStatus(
+              dbCluster.status?.status as DbClusterStatus
+            )}
+          </StatusField>
+        </Stack>
+      </Stack>
       <Box
         sx={{
           borderBottom: 1,
