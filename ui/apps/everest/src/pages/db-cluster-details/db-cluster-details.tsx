@@ -1,4 +1,5 @@
 import { Alert, Box, Skeleton, Tab, Tabs } from '@mui/material';
+import Stack from '@mui/material/Stack';
 import {
   Link,
   Outlet,
@@ -6,6 +7,9 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
+import StatusField from 'components/status-field/status-field';
+import { beautifyDbClusterStatus } from 'pages/databases/DbClusterView.utils';
+import { DB_CLUSTER_STATUS_TO_BASE_STATUS } from 'pages/databases/DbClusterView.constants';
 import { NoMatch } from '../404/NoMatch';
 import BackNavigationText from 'components/back-navigation-text';
 import { DbActionButton } from './db-action-button';
@@ -44,12 +48,13 @@ export const DbClusterDetails = () => {
   // All clear, show the cluster data
   return (
     <Box sx={{ width: '100%' }}>
-      <Box
+      <Stack
+        direction="row"
         sx={{
-          display: 'flex',
           gap: 1,
           alignItems: 'center',
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
           mb: 1,
         }}
       >
@@ -58,8 +63,26 @@ export const DbClusterDetails = () => {
           onBackClick={() => navigate('/databases')}
         />
         {/* At this point, loading is done and we either have the cluster or not */}
-        <DbActionButton dbCluster={dbCluster!} />
-      </Box>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 1,
+          }}
+        >
+          <DbActionButton dbCluster={dbCluster} />
+          <StatusField
+            dataTestId={dbClusterName}
+            status={dbCluster.status?.status as DbClusterStatus}
+            statusMap={DB_CLUSTER_STATUS_TO_BASE_STATUS}
+          >
+            {beautifyDbClusterStatus(
+              dbCluster.status?.status as DbClusterStatus
+            )}
+          </StatusField>
+        </Stack>
+      </Stack>
       <Box
         sx={{
           borderBottom: 1,
